@@ -1,0 +1,87 @@
+<html lang="zh">
+<meta charset="UTF-8">
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    table, td, th {
+        border: 1px solid black;
+    }
+
+    .confirm {
+        background-color: yellow;
+        color: red;
+        font-weight: 900;
+    }
+
+    .new {
+        font-weight: 900;
+        color: orange;
+    }
+
+    th {
+        height: 60px;
+    }
+
+    td {
+        height: 40px;
+    }
+
+    .color1 {
+        background-color: #FFF2CC;
+    }
+
+    .color2 {
+        background-color: #DDEBF7;
+    }
+
+    .color3 {
+        background-color: #FFFF00;
+    }
+</style>
+<body>
+<h3>尊敬的XXX：</h3>
+
+<p>感谢您2021年2月以来付出的努力，希望您2021年3月份能再接再厉，与XXX公司共创辉煌。
+    现同步您2月的账单，请查收与核实。
+    <span class="new">从2020年5月开始，结算已经更改为新模式，请悉知。</span>，
+    在您收到账单的7个工作日左右公司将直接将结算款转入您的预留账号，请注意查收。
+</p>
+
+<p>（此封邮件核实无误后，需回复<span class="confirm">“确认”</span>）</p>
+
+<p>如有问题可联系您对应的经理进行处理，具体明细详见附件，请注意查收！</p>
+
+<table>
+    <tr>
+        <th class="color1">代理商名称</th>
+        <th class="color1">代理商uuid</th>
+        <th class="color1">经理</th>
+        <th class="color2">实际营收(元)</th>
+        <th class="color2">退款金额(元)</th>
+        <th class="color2">净营收（元）</th>
+        <th class="color2">2月分润比例</th>
+        <th class="color2">分成金额</th>
+        <th class="color2">2月迟到扣款（元）</th>
+        <th class="color2">2月发票补款（元）</th>
+        <th class="color2">补扣款最终金额</th>
+        <th class="color3">2月账单结算总额</th>
+    </tr>
+    <tr>
+        <td>${str2}</td>
+        <td>${str3}</td>
+        <td>${str4}</td>
+        <td>${str5}</td>
+        <td>${str6}</td>
+        <td>${str7}</td>
+        <td>${str8}</td>
+        <td>${str9}</td>
+        <td>${str10}</td>
+        <td>${str11}</td>
+        <td>${str12}</td>
+        <td>${str13}</td>
+    </tr>
+</table>
+</body>
+</html>
