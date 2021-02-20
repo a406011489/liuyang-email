@@ -38,21 +38,20 @@ public class SendMailService {
     /**
      * 开始发送邮件
      */
-    public void sendMail() {
+    public static void sendMail() {
         // 1、获取发送名单
         String fileName = receiverConst.sendListPath;
         List<ReceiverDTO> dtoList = EasyExcel.read(fileName).head(ReceiverDTO.class).sheet().doReadSync();
         dtoList.forEach(dto -> log.info("发送名单集合：{}", dto));
 
         // 2、将发送名单转化为BO，并且将附件等信息一一对应上
-        List<ReceiverBO> boList = this.setSendData(dtoList);
+        List<ReceiverBO> boList = SendMailService.setSendData(dtoList);
 
         // 3、放入线程池，在数据量不多的情况下可以选择固定线程的线程池，如果数据量多的话，容易造成OOM
         // 解决办法可以选择生产者消费者模式。发送完一批后再接着发送下一批。
         boList.forEach(bo -> executorService.execute(new EmailSendUtil(bo, SendMailService.mailSender)));
         log.info("放入完毕");
         executorService.shutdown();
-        log.info("全部发送完毕");
     }
 
 
@@ -60,7 +59,7 @@ public class SendMailService {
      * 业务上抄送人最多只有6个，所以一一进行添加，
      * 如果以后有更多了，那么可以先将抄送人提取出来变成一个CSV文件然后读取。
      */
-    private String[] setCcAddress(ReceiverDTO dto) {
+    private static String[] setCcAddress(ReceiverDTO dto) {
         List<String> addressList = new ArrayList<>();
         if (dto.getCcAddress1() != null) {
             addressList.add(dto.getCcAddress1());
@@ -86,17 +85,17 @@ public class SendMailService {
     /**
      * 将发送的名单转化成发送的对象
      */
-    private List<ReceiverBO> setSendData(List<ReceiverDTO> dtoList) {
+    private static List<ReceiverBO> setSendData(List<ReceiverDTO> dtoList) {
         List<ReceiverBO> boList = new ArrayList<>();
         for (ReceiverDTO dto : dtoList) {
             ReceiverBO bo = new ReceiverBO(receiverConst.fileSuffix1);
             bo.setAddressee(dto.getAddressee()); // 收件人
-            bo.setCcAddress(this.setCcAddress(dto));// 抄送人数组
+            bo.setCcAddress(SendMailService.setCcAddress(dto));// 抄送人数组
             bo.setProxyName(dto.getProxyName());// 代理商名字
             bo.setThemeName(receiverConst.themePrefix, receiverConst.themeSuffix);// 邮件主题
             bo.setFiles(receiverConst.sendFilePath, receiverConst.fileSuffix1);// 附件1
             bo.setFiles(receiverConst.sendFilePath, receiverConst.fileSuffix2);// 附件2
-            bo.setEmailContext();
+            bo.setEmailContext();// 邮件正文
             boList.add(bo);
         }
         return boList;

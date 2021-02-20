@@ -30,18 +30,18 @@ public class EmailSendUtil implements Runnable {
         MimeMessageHelper messageHelper;
         try {
             messageHelper = new MimeMessageHelper(mimeMessage, true);
-            messageHelper.setFrom(Objects.requireNonNull(mailSender.getUsername()));
-            messageHelper.setTo(receiverBO.getAddressee());
-            messageHelper.setCc(receiverBO.getCcAddress());
-            messageHelper.setSubject(receiverBO.getEmailTheme());
-            messageHelper.setText(receiverBO.getEmailContext(), true);
+            messageHelper.setFrom(Objects.requireNonNull(mailSender.getUsername()));// 设置本人
+            messageHelper.setTo(receiverBO.getAddressee());// 设置收件人
+            messageHelper.setCc(receiverBO.getCcAddress());// 设置多个抄送人
+            messageHelper.setSubject(receiverBO.getEmailTheme());// 设置邮件主题
+            messageHelper.setText(receiverBO.getEmailContext(), true);// 设置邮件正文
             for (File file : receiverBO.getAttachments()) {
-                messageHelper.addAttachment(file.getName(), file);
+                messageHelper.addAttachment(file.getName(), file);// 添加附件
             }
             mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             log.error("发送错误，请重点注意：{}", receiverBO.getProxyName());
-            e.printStackTrace();
+            return;
         }
         log.info("发送完毕: {}", receiverBO.getProxyName());
     }

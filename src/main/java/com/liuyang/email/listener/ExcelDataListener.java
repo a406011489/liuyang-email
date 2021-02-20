@@ -42,7 +42,7 @@ public class ExcelDataListener extends AnalysisEventListener<ExcelFileDTO> {
     @SneakyThrows
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
-        // 根据业务需求只取第1行
+        // 根据业务需求只取第2行，第一行为title
         ExcelFileDTO excelData = list.get(0);
 
         // 第8列要将数字设置成百分号

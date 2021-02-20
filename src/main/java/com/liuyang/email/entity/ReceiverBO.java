@@ -57,9 +57,11 @@ public class ReceiverBO {
         // 通过VBA进行拆表后文件名字是固定的，后缀均为.xls
         String fileName = filePath + proxyName + suffix + fileSuffix;
         File file = new File(fileName);
-
-        if (targetSuffix.equals(suffix)) { // 需要从账单计算表里取出数据
-            this.contextFile = file; // 需要从账单计算表里取出数据，在这里
+        if(!file.exists()){
+            return;
+        }
+        if (targetSuffix.equals(suffix)) { // 需要从账单计算表里取出数据，判断该文件是不是账单计算表
+            this.contextFile = file; // 需要从账单计算表里取出数据，在这里进行设置
         }
         this.attachments.add(file);
     }
@@ -67,7 +69,7 @@ public class ReceiverBO {
     /**
      * 设置邮件正文，根据技术文档里显示：某某Listener是不能被spring管理的，要每次读取excel都要new,
      * 然后里面用到spring可以构造方法传进去。
-     * 鄙人的理解：这才是用到了面向对象的思想，通过一个个的对象去处理业务，而不是一main到底，
+     * 鄙人的理解：这才是真正的用到了面向对象的思想，通过一个个的对象去处理业务，而不是一main到底，
      * 把校验代码、业务代码等所有代码都写在一个Service里，甚至干脆全部写在Controller里，
      * 虽然这样代码也能跑，这其实是一种面向过程的思维方式，代码维护起来会非常难，
      * 谁愿意去看一个有着上万行代码的文件？
